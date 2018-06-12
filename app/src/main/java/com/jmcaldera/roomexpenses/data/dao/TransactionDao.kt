@@ -7,9 +7,9 @@ import com.jmcaldera.roomexpenses.data.model.TransactionEntity
 interface TransactionDao: BaseDao<TransactionEntity> {
 
     @Query("SELECT * FROM transactions")
-    fun getAllTransactions()
+    fun getAllTransactions(): List<TransactionEntity>
 
     @Query("SELECT * FROM transactions WHERE categoryId=:categoryId")
-    fun getTransactionsForCategory(categoryId: String)
+    fun getTransactionsForCategory(categoryId: String): List<TransactionEntity>
 
 }

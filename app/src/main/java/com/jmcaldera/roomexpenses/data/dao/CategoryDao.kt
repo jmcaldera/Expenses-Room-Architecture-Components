@@ -7,5 +7,5 @@ import com.jmcaldera.roomexpenses.data.model.CategoryEntity
 interface CategoryDao: BaseDao<CategoryEntity> {
 
     @Query("SELECT * FROM categories")
-    fun getAllCategories()
+    fun getAllCategories(): List<CategoryEntity>
 }
