@@ -2,6 +2,7 @@ package com.jmcaldera.roomexpenses.features.transactions
 
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -67,7 +68,11 @@ class TransactionsFragment : BaseFragment() {
     }
 
     private fun setupAddTransaction() {
-
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
+        fab?.apply {
+            setImageResource(R.drawable.ic_add_white_24dp)
+            setOnClickListener { context?.toast("Add Transaction!") }
+        }
     }
 
     private fun handleError(failure: Failure?) {

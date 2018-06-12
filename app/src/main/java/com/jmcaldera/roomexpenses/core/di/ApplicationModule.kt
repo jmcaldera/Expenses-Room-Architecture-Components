@@ -3,8 +3,11 @@ package com.jmcaldera.roomexpenses.core.di
 import android.content.Context
 import com.jmcaldera.roomexpenses.ExpensesApplication
 import com.jmcaldera.roomexpenses.data.ExpensesDatabase
+import com.jmcaldera.roomexpenses.data.ExpensesRepository
 import com.jmcaldera.roomexpenses.data.dao.CategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionDao
+import com.jmcaldera.roomexpenses.domain.CategoriesRepository
+import com.jmcaldera.roomexpenses.domain.TransactionsRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -33,4 +36,17 @@ class ApplicationModule(private val application: ExpensesApplication) {
     @Singleton
     fun provideTransactionDao(db: ExpensesDatabase): TransactionDao = db.transactionDao()
 
+    @Provides
+    @Singleton
+    fun provideExpensesRepository(transactionDao: TransactionDao,
+                                  categoryDao: CategoryDao): ExpensesRepository =
+            ExpensesRepository(transactionDao, categoryDao)
+
+    @Provides
+    @Singleton
+    fun provideTransactionsRepository(repository: ExpensesRepository): TransactionsRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideCategoriesRepository(repository: ExpensesRepository): CategoriesRepository = repository
 }

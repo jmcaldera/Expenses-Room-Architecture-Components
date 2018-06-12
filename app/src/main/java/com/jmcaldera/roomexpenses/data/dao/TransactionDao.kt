@@ -12,7 +12,7 @@ interface TransactionDao: BaseDao<TransactionEntity> {
     @Query("SELECT * FROM transactions WHERE categoryId=:categoryId")
     fun getTransactionsForCategory(categoryId: String): List<TransactionEntity>
 
-    @Query("SELECT * FROM transactions WHERE id=:id")
-    fun getTransactionById(id: String)
+    @Query("SELECT * FROM transactions WHERE transactionId=:id")
+    fun getTransactionById(id: String): TransactionEntity
 
 }

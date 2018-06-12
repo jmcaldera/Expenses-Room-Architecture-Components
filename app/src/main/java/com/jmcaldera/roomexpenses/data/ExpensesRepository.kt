@@ -17,10 +17,8 @@ import com.jmcaldera.roomexpenses.domain.model.Transaction
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class ExpensesRepository
-@Inject constructor(private val transactionDao: TransactionDao,
-                    private val categoryDao: CategoryDao): TransactionsRepository, CategoriesRepository {
+class ExpensesRepository(private val transactionDao: TransactionDao,
+                         private val categoryDao: CategoryDao): TransactionsRepository, CategoriesRepository {
 
     /**
      * Transactions
