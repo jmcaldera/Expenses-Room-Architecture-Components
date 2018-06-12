@@ -1,4 +1,4 @@
-package com.jmcaldera.roomexpenses.domain
+package com.jmcaldera.roomexpenses.domain.usecase
 
 import com.jmcaldera.roomexpenses.core.exception.Failure
 import com.jmcaldera.roomexpenses.core.functional.Either
