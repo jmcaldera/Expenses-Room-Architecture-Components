@@ -1,0 +1,15 @@
+package com.jmcaldera.roomexpenses.data.dao
+
+import android.arch.persistence.room.*
+import com.jmcaldera.roomexpenses.data.model.TransactionEntity
+
+@Dao
+interface TransactionDao: BaseDao<TransactionEntity> {
+
+    @Query("SELECT * FROM transactions")
+    fun getAllTransactions()
+
+    @Query("SELECT * FROM transactions WHERE categoryId=:categoryId")
+    fun getTransactionsForCategory(categoryId: String)
+
+}
