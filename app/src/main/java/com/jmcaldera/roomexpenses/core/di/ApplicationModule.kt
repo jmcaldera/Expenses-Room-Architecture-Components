@@ -5,6 +5,7 @@ import com.jmcaldera.roomexpenses.ExpensesApplication
 import com.jmcaldera.roomexpenses.data.ExpensesDatabase
 import com.jmcaldera.roomexpenses.data.ExpensesRepository
 import com.jmcaldera.roomexpenses.data.dao.CategoryDao
+import com.jmcaldera.roomexpenses.data.dao.TransactionCategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionDao
 import com.jmcaldera.roomexpenses.domain.CategoriesRepository
 import com.jmcaldera.roomexpenses.domain.TransactionsRepository
@@ -38,9 +39,14 @@ class ApplicationModule(private val application: ExpensesApplication) {
 
     @Provides
     @Singleton
+    fun provideTransactionCategoryDao(db: ExpensesDatabase): TransactionCategoryDao = db.transactionCategoryDao()
+
+    @Provides
+    @Singleton
     fun provideExpensesRepository(transactionDao: TransactionDao,
-                                  categoryDao: CategoryDao): ExpensesRepository =
-            ExpensesRepository(transactionDao, categoryDao)
+                                  categoryDao: CategoryDao,
+                                  transactionCategoryDao: TransactionCategoryDao): ExpensesRepository =
+            ExpensesRepository(transactionDao, categoryDao, transactionCategoryDao)
 
     @Provides
     @Singleton

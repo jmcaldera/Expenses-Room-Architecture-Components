@@ -13,8 +13,8 @@ import java.util.*
 data class TransactionEntity(
         @PrimaryKey @ColumnInfo(name = "transactionId") val id: String = UUID.randomUUID().toString(),
         val categoryId: String,
-        val name: String = String.empty(),
-        val amount: Int = 0
+        @ColumnInfo(name = "transactionName") val name: String = String.empty(),
+        @ColumnInfo(name = "transactionAmount")val amount: Int = 0
 ) {
     fun toTransaction() = Transaction(id, categoryId, name, amount)
 }

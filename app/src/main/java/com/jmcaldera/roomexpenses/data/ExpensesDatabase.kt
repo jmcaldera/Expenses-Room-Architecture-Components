@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.jmcaldera.roomexpenses.data.dao.CategoryDao
+import com.jmcaldera.roomexpenses.data.dao.TransactionCategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionDao
 import com.jmcaldera.roomexpenses.data.model.CategoryEntity
 import com.jmcaldera.roomexpenses.data.model.TransactionEntity
@@ -17,6 +18,8 @@ abstract class ExpensesDatabase: RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
 
     abstract fun transactionDao(): TransactionDao
+
+    abstract fun transactionCategoryDao(): TransactionCategoryDao
 
     companion object {
         @Volatile private var INSTANCE: ExpensesDatabase? = null
@@ -33,7 +36,7 @@ abstract class ExpensesDatabase: RoomDatabase() {
                             super.onCreate(db)
                             fillInDb(context)
                         }
-                    }).build()
+                    }).fallbackToDestructiveMigration().build()
 
 
         private fun fillInDb(context: Context) {

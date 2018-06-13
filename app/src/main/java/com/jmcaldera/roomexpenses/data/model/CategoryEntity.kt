@@ -11,7 +11,7 @@ import java.util.*
         indices = [(Index(value = ["categoryId"]))])
 data class CategoryEntity(
         @PrimaryKey @ColumnInfo(name = "categoryId") val id: String = UUID.randomUUID().toString(),
-        val name: String
+        @ColumnInfo(name = "categoryName") val name: String
 ) {
     fun toCategory() = Category(id, name)
 }

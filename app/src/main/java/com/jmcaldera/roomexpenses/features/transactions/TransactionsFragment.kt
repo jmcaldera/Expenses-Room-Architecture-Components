@@ -1,7 +1,6 @@
 package com.jmcaldera.roomexpenses.features.transactions
 
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -24,10 +23,13 @@ import com.jmcaldera.roomexpenses.core.extensions.inTransaction
 import com.jmcaldera.roomexpenses.core.extensions.viewModel
 import com.jmcaldera.roomexpenses.core.platform.BaseActivity
 import com.jmcaldera.roomexpenses.core.platform.BaseFragment
+import com.jmcaldera.roomexpenses.domain.model.TransactionCategory
 import com.jmcaldera.roomexpenses.features.SharedViewModel
 import com.jmcaldera.roomexpenses.features.addtransaction.AddTransactionFragment
+import com.jmcaldera.roomexpenses.features.model.TransactionCategoryView
 import com.jmcaldera.roomexpenses.features.model.TransactionView
 import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsAdapter
+import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsCategoryAdapter
 import kotlinx.android.synthetic.main.fragment_transactions.*
 import javax.inject.Inject
 
@@ -41,7 +43,7 @@ import javax.inject.Inject
 class TransactionsFragment : BaseFragment() {
 
     @Inject
-    lateinit var transactionsAdapter: TransactionsAdapter
+    lateinit var transactionsCategoryAdapter: TransactionsCategoryAdapter
 
     private lateinit var transactionsViewModel: TransactionsViewModel
 
@@ -55,7 +57,7 @@ class TransactionsFragment : BaseFragment() {
 
         transactionsViewModel = viewModel(viewModelFactory) {
             // observe
-            observe(transactions, ::showTransactions)
+            observe(transactionsCategory, ::showTransactionsCategory)
             failure(failure, ::handleError)
         }
 
@@ -78,15 +80,16 @@ class TransactionsFragment : BaseFragment() {
         getTransactions()
     }
 
-
     private fun setupTransactionsList() {
-        transactionsAdapter.clickListener = { transaction ->
-            context?.toast(transaction.name)
+        transactionsCategoryAdapter.clickListener = { transaction ->
+            context?.toast(transaction.transactionName)
         }
-        transactions.adapter = transactionsAdapter
+
+        transactions.adapter = transactionsCategoryAdapter
         transactions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         transactions.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
+
 
     private fun setupAddTransaction() {
         val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
@@ -112,7 +115,7 @@ class TransactionsFragment : BaseFragment() {
         }
     }
 
-    private fun showTransactions(list: List<TransactionView>?) {
+    private fun showTransactionsCategory(list: List<TransactionCategoryView>?) {
         list?.let {
             if (it.isNotEmpty()) {
                 showList(it)
@@ -122,9 +125,9 @@ class TransactionsFragment : BaseFragment() {
         }
     }
 
-    private fun showList(list: List<TransactionView>) {
+    private fun showList(list: List<TransactionCategoryView>) {
         noTransactions.isGone = true
-        transactionsAdapter.items = list
+        transactionsCategoryAdapter.items = list
     }
 
     private fun showEmptyList() {

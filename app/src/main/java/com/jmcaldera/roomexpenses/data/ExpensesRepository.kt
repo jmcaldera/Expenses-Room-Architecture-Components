@@ -7,6 +7,7 @@ import com.jmcaldera.roomexpenses.core.functional.Either
 import com.jmcaldera.roomexpenses.core.functional.left
 import com.jmcaldera.roomexpenses.core.functional.right
 import com.jmcaldera.roomexpenses.data.dao.CategoryDao
+import com.jmcaldera.roomexpenses.data.dao.TransactionCategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionDao
 import com.jmcaldera.roomexpenses.data.model.CategoryEntity
 import com.jmcaldera.roomexpenses.data.model.TransactionEntity
@@ -14,18 +15,25 @@ import com.jmcaldera.roomexpenses.domain.CategoriesRepository
 import com.jmcaldera.roomexpenses.domain.TransactionsRepository
 import com.jmcaldera.roomexpenses.domain.model.Category
 import com.jmcaldera.roomexpenses.domain.model.Transaction
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.jmcaldera.roomexpenses.domain.model.TransactionCategory
 
 class ExpensesRepository(private val transactionDao: TransactionDao,
-                         private val categoryDao: CategoryDao): TransactionsRepository, CategoriesRepository {
-
+                         private val categoryDao: CategoryDao,
+                         private val transactionCategoryDao: TransactionCategoryDao) :
+        TransactionsRepository, CategoriesRepository {
     /**
      * Transactions
      */
     override fun getAllTransactions(): Either<Failure, List<Transaction>> =
             try {
                 right(transactionDao.getAllTransactions().map { it.toTransaction() })
+            } catch (t: Throwable) {
+                left(TransactionError(t))
+            }
+
+    override fun getAllTransactionsCategory(): Either<Failure, List<TransactionCategory>> =
+            try {
+                right(transactionCategoryDao.getAllTransactionsWithCategory().map { it.toTransactionCategory() })
             } catch (t: Throwable) {
                 left(TransactionError(t))
             }
