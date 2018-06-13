@@ -23,12 +23,9 @@ import com.jmcaldera.roomexpenses.core.extensions.inTransaction
 import com.jmcaldera.roomexpenses.core.extensions.viewModel
 import com.jmcaldera.roomexpenses.core.platform.BaseActivity
 import com.jmcaldera.roomexpenses.core.platform.BaseFragment
-import com.jmcaldera.roomexpenses.domain.model.TransactionCategory
 import com.jmcaldera.roomexpenses.features.SharedViewModel
 import com.jmcaldera.roomexpenses.features.addtransaction.AddTransactionFragment
 import com.jmcaldera.roomexpenses.features.model.TransactionCategoryView
-import com.jmcaldera.roomexpenses.features.model.TransactionView
-import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsAdapter
 import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsCategoryAdapter
 import kotlinx.android.synthetic.main.fragment_transactions.*
 import javax.inject.Inject
