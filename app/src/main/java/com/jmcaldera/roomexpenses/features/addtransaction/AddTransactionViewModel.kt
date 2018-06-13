@@ -8,6 +8,7 @@ import com.jmcaldera.roomexpenses.domain.usecase.UseCase
 import com.jmcaldera.roomexpenses.domain.usecase.category.GetCategories
 import com.jmcaldera.roomexpenses.domain.usecase.transaction.SaveTransaction
 import com.jmcaldera.roomexpenses.features.model.CategoryView
+import com.jmcaldera.roomexpenses.features.model.TransactionView
 import javax.inject.Inject
 
 class AddTransactionViewModel
@@ -16,8 +17,19 @@ class AddTransactionViewModel
 
     var categories: MutableLiveData<List<CategoryView>> = MutableLiveData()
 
+    var saved: MutableLiveData<Boolean> = MutableLiveData()
+
     fun getCategories() {
         getCategories.execute({ it.fold(::handleFailure, ::handleCategories) }, UseCase.None())
+    }
+
+    fun saveTransaction(transaction: TransactionView) {
+        saveTransaction.execute({ it.fold(::handleFailure, ::handleTransaction) },
+                SaveTransaction.Params(transaction.toTransaction()))
+    }
+
+    private fun handleTransaction(row: Long) {
+        saved.value = row > 0
     }
 
     private fun handleCategories(list: List<Category>) {

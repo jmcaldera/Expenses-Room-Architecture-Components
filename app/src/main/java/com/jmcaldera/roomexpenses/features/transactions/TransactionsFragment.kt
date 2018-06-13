@@ -1,6 +1,8 @@
 package com.jmcaldera.roomexpenses.features.transactions
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -22,6 +24,7 @@ import com.jmcaldera.roomexpenses.core.extensions.inTransaction
 import com.jmcaldera.roomexpenses.core.extensions.viewModel
 import com.jmcaldera.roomexpenses.core.platform.BaseActivity
 import com.jmcaldera.roomexpenses.core.platform.BaseFragment
+import com.jmcaldera.roomexpenses.features.SharedViewModel
 import com.jmcaldera.roomexpenses.features.addtransaction.AddTransactionFragment
 import com.jmcaldera.roomexpenses.features.model.TransactionView
 import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsAdapter
@@ -37,9 +40,12 @@ import javax.inject.Inject
  */
 class TransactionsFragment : BaseFragment() {
 
-    @Inject lateinit var transactionsAdapter: TransactionsAdapter
+    @Inject
+    lateinit var transactionsAdapter: TransactionsAdapter
 
     private lateinit var transactionsViewModel: TransactionsViewModel
+
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun layoutId(): Int = R.layout.fragment_transactions
 
@@ -51,6 +57,17 @@ class TransactionsFragment : BaseFragment() {
             // observe
             observe(transactions, ::showTransactions)
             failure(failure, ::handleError)
+        }
+
+        activity?.let {
+            sharedViewModel = ViewModelProviders.of(it, viewModelFactory)[SharedViewModel::class.java]
+                    .also {
+                        observe(it.transactionSaved) { event ->
+                            event?.getContentIfNotHandled()?.let { saved ->
+                                if (saved) getTransactions()
+                            }
+                        }
+                    }
         }
     }
 
@@ -87,7 +104,7 @@ class TransactionsFragment : BaseFragment() {
     }
 
     private fun handleError(failure: Failure?) {
-        when(failure) {
+        when (failure) {
 
             is TransactionError -> context?.toast(failure.t.message.toString())
             is CategoryError -> context?.toast(failure.t.message.toString())
