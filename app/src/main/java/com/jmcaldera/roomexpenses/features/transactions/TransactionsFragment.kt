@@ -4,6 +4,7 @@ package com.jmcaldera.roomexpenses.features.transactions
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -17,8 +18,11 @@ import com.jmcaldera.roomexpenses.R
 import com.jmcaldera.roomexpenses.core.exception.CategoryError
 import com.jmcaldera.roomexpenses.core.exception.Failure
 import com.jmcaldera.roomexpenses.core.exception.TransactionError
+import com.jmcaldera.roomexpenses.core.extensions.inTransaction
 import com.jmcaldera.roomexpenses.core.extensions.viewModel
+import com.jmcaldera.roomexpenses.core.platform.BaseActivity
 import com.jmcaldera.roomexpenses.core.platform.BaseFragment
+import com.jmcaldera.roomexpenses.features.addtransaction.AddTransactionFragment
 import com.jmcaldera.roomexpenses.features.model.TransactionView
 import com.jmcaldera.roomexpenses.features.transactions.adapter.TransactionsAdapter
 import kotlinx.android.synthetic.main.fragment_transactions.*
@@ -71,7 +75,14 @@ class TransactionsFragment : BaseFragment() {
         val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
         fab?.apply {
             setImageResource(R.drawable.ic_add_white_24dp)
-            setOnClickListener { context?.toast("Add Transaction!") }
+            setOnClickListener {
+                fragmentManager?.inTransaction {
+                    replace((activity as BaseActivity).container(),
+                            AddTransactionFragment.newInstance(), "add_transaction")
+                            .addToBackStack(null)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                }
+            }
         }
     }
 
