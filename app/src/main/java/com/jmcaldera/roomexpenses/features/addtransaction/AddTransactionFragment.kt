@@ -18,6 +18,7 @@ import com.jmcaldera.roomexpenses.core.exception.TransactionError
 import com.jmcaldera.roomexpenses.core.extensions.empty
 import com.jmcaldera.roomexpenses.core.extensions.viewModel
 import com.jmcaldera.roomexpenses.core.platform.BaseFragment
+import com.jmcaldera.roomexpenses.features.MainActivity
 import com.jmcaldera.roomexpenses.features.SharedViewModel
 import com.jmcaldera.roomexpenses.features.addtransaction.adapter.CategoriesAdapter
 import com.jmcaldera.roomexpenses.features.model.CategoryView
@@ -58,6 +59,12 @@ class AddTransactionFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeViews()
         loadCategories()
+        hideFab()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        showFab()
     }
 
     private fun initializeViews() {
@@ -103,6 +110,14 @@ class AddTransactionFragment : BaseFragment() {
 
     private fun loadCategories() {
         addTransactionViewModel.getCategories()
+    }
+
+    private fun hideFab() {
+        (activity as MainActivity).hideFab()
+    }
+
+    private fun showFab() {
+        (activity as MainActivity).showFab()
     }
 
     companion object {
