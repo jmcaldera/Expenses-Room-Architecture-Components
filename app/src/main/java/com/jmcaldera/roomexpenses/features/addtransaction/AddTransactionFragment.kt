@@ -83,6 +83,29 @@ class AddTransactionFragment : BaseFragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categories.adapter = adapter
         }
+
+        date.text = getCurrentDate()
+        time.text = getCurrentTime()
+        date.setOnClickListener { showDatePicker() }
+        time.setOnClickListener { showTimePicker() }
+    }
+
+    private fun getCurrentDate(): String {
+        val date = "14 jun 2018"
+        return date
+    }
+
+    private fun getCurrentTime(): String {
+        val time = "11:35 AM"
+        return time
+    }
+
+    private fun showDatePicker() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun showTimePicker() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handleSavedTransaction(saved: Boolean?) {
