@@ -78,7 +78,8 @@ class AddTransactionFragment : BaseFragment(), DatePickerDialog.OnDateSetListene
         buttonSave.setOnClickListener {
 
             val transaction = TransactionView(String.empty(), (categories.selectedItem as CategoryView).id,
-                    nameInputLayout.editText?.text.toString(), amountInputLayout.editText?.text.toString().toInt())
+                    nameInputLayout.editText?.text.toString(), amountInputLayout.editText?.text.toString().toInt(),
+                    addTransactionViewModel.getDateTime())
 
             context?.toast(transaction.toString(), Toast.LENGTH_LONG)
             addTransactionViewModel.saveTransaction(transaction)

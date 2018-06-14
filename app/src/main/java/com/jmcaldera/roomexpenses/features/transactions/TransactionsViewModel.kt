@@ -21,7 +21,7 @@ class TransactionsViewModel
     private fun handleTransactionCategory(list: List<TransactionCategory>) {
         this.transactionsCategory.postValue(list.map { with(it) {
             TransactionCategoryView(transactionId, transactionName, transactionAmount,
-                    categoryId, categoryName) }
+                    transactionDate, categoryId, categoryName) }
         })
     }
 

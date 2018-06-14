@@ -4,7 +4,9 @@ import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import com.jmcaldera.roomexpenses.data.converter.DateTypeConverter
 import com.jmcaldera.roomexpenses.data.dao.CategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionCategoryDao
 import com.jmcaldera.roomexpenses.data.dao.TransactionDao
@@ -13,6 +15,7 @@ import com.jmcaldera.roomexpenses.data.model.TransactionEntity
 import kotlinx.coroutines.experimental.async
 
 @Database(entities = [CategoryEntity::class, TransactionEntity::class], version = 1)
+@TypeConverters(DateTypeConverter::class)
 abstract class ExpensesDatabase: RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao

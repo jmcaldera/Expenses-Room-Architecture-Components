@@ -7,6 +7,6 @@ import com.jmcaldera.roomexpenses.data.model.TransactionCategoryJoin
 @Dao
 interface TransactionCategoryDao {
 
-    @Query("SELECT * FROM transactions INNER JOIN categories ON transactions.categoryId = categories.categoryId")
+    @Query("SELECT * FROM transactions INNER JOIN categories ON transactions.categoryId = categories.categoryId ORDER BY transactionDate DESC")
     fun getAllTransactionsWithCategory() : List<TransactionCategoryJoin>
 }

@@ -8,6 +8,8 @@ import com.jmcaldera.roomexpenses.R
 import com.jmcaldera.roomexpenses.core.extensions.inflate
 import com.jmcaldera.roomexpenses.features.model.TransactionCategoryView
 import kotlinx.android.synthetic.main.item_transaction.view.*
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -52,6 +54,7 @@ class TransactionsCategoryAdapter
                 itemView.name.text = transactionName
                 itemView.categoryName.text = categoryName
                 itemView.amount.text = transactionAmount.toString()
+                itemView.date.text = transactionDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
                 itemView.setOnClickListener { itemClick(this) }
             }
         }

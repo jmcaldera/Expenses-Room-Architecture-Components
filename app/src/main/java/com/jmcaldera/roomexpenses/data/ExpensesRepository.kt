@@ -48,7 +48,7 @@ class ExpensesRepository(private val transactionDao: TransactionDao,
     override fun saveTransaction(transaction: Transaction): Either<Failure, Long> =
             try {
                 right(transactionDao.insert(with(transaction) {
-                    TransactionEntity(categoryId = categoryId, name = name, amount = amount)
+                    TransactionEntity(categoryId = categoryId, name = name, amount = amount, date = date)
                 }))
             } catch (t: Throwable) {
                 left(TransactionError(t))
@@ -56,14 +56,14 @@ class ExpensesRepository(private val transactionDao: TransactionDao,
 
     override fun updateTransaction(transaction: Transaction): Either<Failure, Int> =
             try {
-                right(transactionDao.update(with(transaction) { TransactionEntity(id, categoryId, name, amount) }))
+                right(transactionDao.update(with(transaction) { TransactionEntity(id, categoryId, name, amount, date) }))
             } catch (t: Throwable) {
                 left(TransactionError(t))
             }
 
     override fun deleteTransaction(transaction: Transaction): Either<Failure, Int> =
             try {
-                right(transactionDao.delete(with(transaction) { TransactionEntity(id, categoryId, name, amount) }))
+                right(transactionDao.delete(with(transaction) { TransactionEntity(id, categoryId, name, amount, date) }))
             } catch (t: Throwable) {
                 left(TransactionError(t))
             }
