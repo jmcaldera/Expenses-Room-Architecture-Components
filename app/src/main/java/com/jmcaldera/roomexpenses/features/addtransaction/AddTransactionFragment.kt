@@ -1,11 +1,15 @@
 package com.jmcaldera.roomexpenses.features.addtransaction
 
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.View
+import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.widget.toast
 import com.jmcaldera.diffutiltest.core.extensions.failure
@@ -24,6 +28,9 @@ import com.jmcaldera.roomexpenses.features.addtransaction.adapter.CategoriesAdap
 import com.jmcaldera.roomexpenses.features.model.CategoryView
 import com.jmcaldera.roomexpenses.features.model.TransactionView
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 
 
 /**
@@ -32,8 +39,7 @@ import kotlinx.android.synthetic.main.fragment_add_transaction.*
  * create an instance of this fragment.
  *
  */
-class AddTransactionFragment : BaseFragment() {
-
+class AddTransactionFragment : BaseFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private lateinit var addTransactionViewModel: AddTransactionViewModel
 
     private lateinit var sharedViewModel: SharedViewModel
@@ -84,28 +90,34 @@ class AddTransactionFragment : BaseFragment() {
             categories.adapter = adapter
         }
 
-        date.text = getCurrentDate()
-        time.text = getCurrentTime()
+        setDateText()
+        setTimeText()
         date.setOnClickListener { showDatePicker() }
         time.setOnClickListener { showTimePicker() }
     }
 
-    private fun getCurrentDate(): String {
-        val date = "14 jun 2018"
-        return date
+    private fun setDateText() {
+        date.text = addTransactionViewModel.getDateTime().toLocalDate()
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
     }
 
-    private fun getCurrentTime(): String {
-        val time = "11:35 AM"
-        return time
+    private fun setTimeText() {
+        time.text = addTransactionViewModel.getDateTime()
+                .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
     }
 
     private fun showDatePicker() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val dateTime = addTransactionViewModel.getDateTime()
+        val datePicker = DatePickerDialog(context, this, dateTime.year,
+                dateTime.monthValue - 1, dateTime.dayOfMonth)
+        datePicker.show()
     }
 
     private fun showTimePicker() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val dateTime = addTransactionViewModel.getDateTime()
+        val timePicker = TimePickerDialog(context, this, dateTime.hour,
+                dateTime.minute, false)
+        timePicker.show()
     }
 
     private fun handleSavedTransaction(saved: Boolean?) {
@@ -141,6 +153,19 @@ class AddTransactionFragment : BaseFragment() {
 
     private fun showFab() {
         (activity as MainActivity).showFab()
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val oldDate = addTransactionViewModel.getDateTime()
+        addTransactionViewModel.setDateTime(LocalDateTime.of(year, month + 1, dayOfMonth, oldDate.hour, oldDate.minute))
+        setDateText()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val oldDate = addTransactionViewModel.getDateTime()
+        addTransactionViewModel.setDateTime(LocalDateTime.of(oldDate.year, oldDate.month, oldDate.dayOfMonth,
+                hourOfDay, minute))
+        setTimeText()
     }
 
     companion object {

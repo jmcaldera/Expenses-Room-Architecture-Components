@@ -50,8 +50,9 @@
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_date_24dp"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_date_24dp"
@@ -60,14 +61,17 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintBottom_toTopOf="@+id/categories"
         app:layout_constraintEnd_toStartOf="@+id/time"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amountInputLayout"
         tools:text="14 jun 2018" />
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_time_24dp"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_time_24dp"

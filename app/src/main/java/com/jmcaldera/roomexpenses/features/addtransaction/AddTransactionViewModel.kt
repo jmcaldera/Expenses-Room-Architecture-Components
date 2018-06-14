@@ -9,6 +9,7 @@ import com.jmcaldera.roomexpenses.domain.usecase.category.GetCategories
 import com.jmcaldera.roomexpenses.domain.usecase.transaction.SaveTransaction
 import com.jmcaldera.roomexpenses.features.model.CategoryView
 import com.jmcaldera.roomexpenses.features.model.TransactionView
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 class AddTransactionViewModel
@@ -18,6 +19,8 @@ class AddTransactionViewModel
     var categories: MutableLiveData<List<CategoryView>> = MutableLiveData()
 
     var saved: MutableLiveData<Boolean> = MutableLiveData()
+
+    private var dateTime : LocalDateTime = LocalDateTime.now()
 
     fun getCategories() {
         getCategories.execute({ it.fold(::handleFailure, ::handleCategories) }, UseCase.None())
@@ -35,4 +38,8 @@ class AddTransactionViewModel
     private fun handleCategories(list: List<Category>) {
         categories.postValue(list.map { with(it) { CategoryView(id, name) } })
     }
+
+    fun getDateTime() = dateTime
+
+    fun setDateTime(newDateTime: LocalDateTime) { dateTime = newDateTime }
 }
